@@ -5,20 +5,27 @@ import (
 	"net/http"
 )
 
-//funcion que escribe peticion y retorna la peticion
-func hola(w http.ResponseWriter, r *http.Request) {
-	//acumular la respuesta y enviarla por la red
-	//	fmt.Fprintf(w, r.URL.Path)
-	fmt.Fprint(w, a)
+func main() {
+
+	//ServerMux es el enrutador del paquete http
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", handler)
+	mux.HandleFunc("/prueba", handlerPrueba)
+	mux.HandleFunc("/usuario", handlerUsuario)
+
+	//Se le pasa el puerto y un enrutador
+	http.ListenAndServe(":8080", mux)
+
 }
 
-func main() {
-	//cuando se conecte a / llama la funcion hola
-	http.HandlerFunc("/", hola)
+func handler(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Hola mundo</h1>")
+}
 
-	//en q puerto vamos a escuchar
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		fmt.Println(err)
-	}
+func handlerPrueba(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Hola mundo desde /Pruebas</h1>")
+}
+
+func handlerUsuario(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "<h1>Bienvenido Usuario</h1>")
 }
