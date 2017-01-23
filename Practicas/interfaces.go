@@ -16,37 +16,64 @@ type speaker interface {
 	speak()
 }
 
+type listener interface {
+	listen()
+}
+
+//interfaz q es composicion de las anteriores
+type speakerListener interface {
+	listener
+	speaker
+}
+
 // inglés representa a una persona que habla inglés
 
-type ingles struct{}
+type ingles struct {
+	name string
+}
 
 // speak implementa la interface speaker
 func (ingles) speak() {
 	fmt.Println("Hello World")
 }
 
+func (i ingles) listen() {
+	fmt.Printf("%s listen in english \n", i.name)
+}
+
 // chino representa a una persona que habla chino
 
-type chino struct{}
+type chino struct {
+	name string
+}
 
 // speak implementa la interface speaker
 func (chino) speak() {
 	fmt.Println("你好世界")
 }
+func (chino) listen() {
+	fmt.Println("你你你你你你你你你你好世界")
+}
 
 func main() {
 	//Declarar una variable para interface
 	var sp speaker
+	var lp listener
+	var sl speakerListener
 
 	// Asignarle un valor a la interface y vamos a llamar al método (de la interface)
-	var i ingles
+	var i = ingles{name: "Isa"}
 	sp = i
 	sp.speak()
+	lp = i
+	lp.listen()
+	fmt.Println("El ingles es: ", i.name)
 
 	// Chino
-	var c chino
-	sp = c
-	sp.speak()
+	var c = chino{name: "ho chimin"}
+	sl = c
+	sl.speak()
+	sl.listen()
 
 	// Crear nuevos valores y llamar la función
 	decirHola(new(ingles))

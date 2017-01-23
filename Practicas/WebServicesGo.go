@@ -1,4 +1,5 @@
 //web Server
+//Este servidor re direcciona a la url que se le pasa en el handler
 
 package main
 

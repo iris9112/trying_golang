@@ -1,0 +1,18 @@
+{
+  "rules": [
+    {
+      "extensions": [
+        ".go"
+      ],
+      "words": [
+        "fmt.Println"
+      ]
+    }
+  ],
+  "subdirs": [
+    "demo"
+  ],
+  "excluded": [
+
+  ]
+}
