@@ -14,11 +14,11 @@ func (m mensaje) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hola mundo</h1>")
+	fmt.Fprintf(w, "<h1>Bienvenido!!</h1>")
 }
 
 func handlerPrueba(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Hola mundo desde /Pruebas</h1>")
+	fmt.Fprintf(w, "<h1>Bienvenido a la sesión de Pruebas</h1>")
 }
 
 func handlerUsuario(w http.ResponseWriter, r *http.Request) {
@@ -29,7 +29,7 @@ func main() {
 
 	//creamos el manejador como estructura y no como funcion
 	msg := mensaje{
-		msg: "Hola mundo de nuevo",
+		msg: "<h1>Bienvenido a la seccion de manejadores</h1>",
 	}
 
 	//ServerMux es el enrutador del paquete http
@@ -37,11 +37,9 @@ func main() {
 	mux.HandleFunc("/", handler)
 	mux.HandleFunc("/prueba", handlerPrueba)
 	mux.HandleFunc("/usuario", handlerUsuario)
-
 	//como ya tenemos una struct manejador entonces no necesitamos pasarla
 	//como funcion con HandlerFunc sino directamente llamamos al manejador
 	mux.Handle("/manejador", msg)
-
 	//Se le pasa el puerto y un enrutador
 	http.ListenAndServe(":8080", mux)
 
