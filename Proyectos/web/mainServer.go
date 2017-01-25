@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"time"
 )
 
 type mensaje struct {
@@ -11,10 +13,6 @@ type mensaje struct {
 
 func (m mensaje) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, m.msg)
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<h1>Bienvenido!!</h1>")
 }
 
 func handlerPrueba(w http.ResponseWriter, r *http.Request) {
@@ -32,15 +30,28 @@ func main() {
 		msg: "<h1>Bienvenido a la seccion de manejadores</h1>",
 	}
 
+	//Servir archivos estaticos, recibe el directorio donde se ubican los archivos
+	//Para eso se llama a la funcion dir q toma el nombre del directorio o la ruta
+	fs := http.FileServer(http.Dir("public"))
+
 	//ServerMux es el enrutador del paquete http
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", handler)
+	mux.Handle("/", fs)
 	mux.HandleFunc("/prueba", handlerPrueba)
 	mux.HandleFunc("/usuario", handlerUsuario)
 	//como ya tenemos una struct manejador entonces no necesitamos pasarla
 	//como funcion con HandlerFunc sino directamente llamamos al manejador
 	mux.Handle("/manejador", msg)
-	//Se le pasa el puerto y un enrutador
-	http.ListenAndServe(":8080", mux)
+
+	server := &http.Server{
+		Addr:           ":8080",
+		Handler:        mux,
+		ReadTimeout:    10 * time.Second,
+		WriteTimeout:   10 * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+
+	log.Println("Conectandose a //localhost:8080 ...")
+	log.Fatal(server.ListenAndServe())
 
 }
