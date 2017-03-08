@@ -33,5 +33,4 @@ func main() {
 	app.Run(os.Args)
 }
 
-//llamada al archivo: go run *.go --dir directorio --output archivoSalida
-//go run *.go --dir "/home/isabel/golibs/src/github.com/iris9112/readfiles/textos" --output "file.txt"
+
